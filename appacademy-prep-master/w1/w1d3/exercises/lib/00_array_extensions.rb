@@ -5,6 +5,8 @@
 
 class Array
   def sum
+    arr = self.dup
+    arr.inject(0){|accu, num| accu+num}
   end
 end
 
@@ -15,6 +17,10 @@ end
 
 class Array
   def square
+    self.map {|num| num*num}
+  end
+  def square!
+    self.map!{|num| num*num}
   end
 end
 
@@ -32,6 +38,15 @@ end
 
 class Array
   def my_uniq
+    uniq_self = []
+    hash = Hash.new
+    self.each do |x|
+      if !hash.has_key?(x)
+        hash[x] = 1
+        uniq_self.push(x)
+      end
+    end
+    uniq_self
   end
 end
 
@@ -53,6 +68,17 @@ end
 
 class Array
   def two_sum
+    result = []
+    h = Hash.new
+    self.each_with_index do |num, index|
+      if h.has_key?(num)
+        pair = [h[num],index]
+        result.push(pair)
+      else
+        h[0-num] = index
+      end
+    end
+    result
   end
 end
 
@@ -65,6 +91,17 @@ end
 
 class Array
   def median
+    if self.length == 0
+      return nil
+    end
+    self.sort!
+    mid = self.length/2
+    if self.length.even?
+      med = (self[mid] + self[mid - 1]) / 2.0
+    else
+      med = self[mid]
+    end
+    med
   end
 end
 
@@ -117,6 +154,17 @@ end
 
 class Array
   def my_transpose
+    row_l = self.length-1
+    col_l = self[0].length-1
+    transpose_self = Array.new
+    (0..col_l).each do |col_num|
+      col = Array.new
+      (0..row_l).each do |row_num|
+        col.push(self[row_num][col_num])
+      end
+      transpose_self.push(col)
+    end
+    transpose_self
   end
 end
 
