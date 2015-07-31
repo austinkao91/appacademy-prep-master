@@ -27,8 +27,62 @@
 #
 # Write a `set1#minus(set2)` method which returns a new set which includes
 # all the items of `set1` that aren't in `set2`.
-
 class MyHashSet
+	attr_accessor :store
+	
+	def initialize
+		@store = {}
+	end
+	
+	def insert(el)
+		@store[el] = true
+	end
+	
+	def include?(el)
+		@store.has_key?(el)
+	end
+	
+	def delete(el)
+		@store.delete(el).nil? ? false : true
+	end		
+	
+	def to_a
+		arr = []
+		@store.each_key do |key|
+			arr.push(key)
+		end
+		arr
+	end
+	
+	def union(set2)
+		union_set = MyHashSet.new
+		set2.store.each_key do |key|
+			union_set.insert(key)
+		end
+		self.store.each_key do |key|
+			union_set.insert(key)
+		end
+		union_set
+	end
+	
+	def intersect(set2)
+		intersect_set = MyHashSet.new
+		set2.store.each_key do |key|
+			intersect_set.insert(key) if self.store.has_key?(key)
+		end
+		self.store.each_key do |key|
+			intersect_set.insert(key) if set2.store.has_key?(key)
+		end
+		intersect_set
+	end
+	
+	def minus(set2)
+		minus_set = MyHashSet.new
+		self.store.each_key do |key|
+			minus_set.insert(key) unless set2.store.has_key?(key)
+		end
+		minus_set
+	end
 end
 
 # Bonus

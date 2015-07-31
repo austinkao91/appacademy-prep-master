@@ -1,3 +1,5 @@
 class Friend
-  # TODO: your code goes here!
+  def greeting(name = nil)
+		name == nil ? "Hello!": "Hello, #{name}!"
+	end
 end
