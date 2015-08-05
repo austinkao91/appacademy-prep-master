@@ -49,6 +49,33 @@
 #   enrolls in a new course that conflicts with an existing course time.
 #     * May want to write a `Student#has_conflict?` method to help.
 
-class Course
 
+class Course
+  attr_accessor :name, :department, :credits, :enrolled, :days, :time_block
+  
+  def initialize(name, department, credits, days, time_block)
+    @name = name
+    @department = department
+    @credits = credits
+    @enrolled = []
+    @days = days
+    @time_block = time_block
+  end
+  
+  def students
+    @enrolled
+  end
+  
+  def add_student(student)
+    student.enroll(self)
+  end
+  
+  def conflicts_with?(course)
+    self.days.each do |day| 
+      if course.days.include?(day) && self.time_block == course.time_block
+          return true
+      end
+    end
+    return false
+  end
 end
