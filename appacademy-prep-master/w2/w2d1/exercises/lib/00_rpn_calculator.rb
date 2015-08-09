@@ -72,3 +72,21 @@ class RPNCalculator
    return @value
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+  calc = RPNCalculator.new
+  if ARGV.empty?
+    input = gets.chomp
+    expression = ""
+    while(input != "")
+      expression = "#{expression} #{input}"
+      input = gets.chomp
+    end
+    puts calc.evaluate(expression)
+  else
+    file_name = ARGV[0]
+    File.open(file_name).each do |f|
+      puts calc.evaluate(f)
+    end
+  end
+end

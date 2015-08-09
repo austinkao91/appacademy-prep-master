@@ -51,7 +51,7 @@
 
 
 class Course
-  attr_accessor :name, :department, :credits, :enrolled, :days, :time_block
+  attr_accessor :name, :department, :credits, :students, :days, :time_block
   
   def initialize(name, department, credits, days, time_block)
     @name = name
@@ -61,10 +61,7 @@ class Course
     @days = days
     @time_block = time_block
   end
-  
-  def students
-    @enrolled
-  end
+
   
   def add_student(student)
     student.enroll(self)
