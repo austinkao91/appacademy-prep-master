@@ -8,7 +8,7 @@ describe BattleshipGame do
   let(:two_ship_board) { Board.new(two_ship_grid) }
 
   let(:player) { double("player") }
-
+  
   let(:game) { BattleshipGame.new(player, two_ship_board) }
 
   describe "#initialize" do

@@ -17,3 +17,13 @@
 # transmogrify("hello", options)
 # # options shouldn't change.
 # ```
+
+def transmogrify(str, opts = {:times => 1, :upcase => false, :reverse => false})
+  raise "Please input a string" unless str.is_a? String
+  result= str.dup
+  result.upcase! if opts[:upcase]
+  result.reverse! if opts[:reverse]
+  final = ""
+  (opts[:times]).times { final = "#{final}#{result}"}
+  final
+end
