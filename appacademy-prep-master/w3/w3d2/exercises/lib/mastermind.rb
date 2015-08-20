@@ -14,7 +14,7 @@ class Code
   
   def [](key)
 		@pegs[key]
-	end
+  end
 	
   def self.parse(str)
     arr =[]
@@ -59,7 +59,13 @@ class Game
   end
   
   def get_guess
-    gets.to_s.chomp
+    puts "Guess the code:"
+    begin
+      Code.parse(gets.chomp)
+    rescue
+      puts "Error parsing code!"
+      retry
+    end
   end
   
   def display_matches(code)

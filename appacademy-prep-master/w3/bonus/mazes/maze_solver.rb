@@ -1,6 +1,7 @@
 class Maze
   attr_reader :grid, :width, :start, :length
   def initialize(grid)
+    @copy = grid
     @grid = grid
     @width = @grid.length-1
     @length = @grid[0].length-1
@@ -10,8 +11,14 @@ class Maze
   end
   
   def solve
-    find_path
-        final = end_pos
+    
+    start = Time.now
+    find_path_dfs
+    show_path
+    puts "DFS takes #{Time.now-start} Seconds!"
+  end
+  def show_path
+    final = end_pos
     while @path[final[0]][final[1]] != final
       final = @path[final[0]][final[1]]
       @grid[final[0]][final[1]] = "X" unless @grid[final[0]][final[1]] == "S"
@@ -52,11 +59,14 @@ class Maze
     puts str
   end
   
-  def find_path
+  def find_path_dfs
     @start = start_pos
     queue = [start]
-    while !queue.empty?
-      curr_pos = queue.shift
+    check = true
+    while check
+      curr_pos = queue.pop
+      @grid[curr_pos[0]][curr_pos[1]] = 'c'
+      render
       @marked[curr_pos[0]][curr_pos[1]] = true
       curr_dist = @dist_grid[curr_pos[0]][curr_pos[1]]
       neighbors(curr_pos).each do |pos|
@@ -68,9 +78,34 @@ class Maze
             @path[pos[0]][pos[1]] = curr_pos
           end
           
-          unless @marked[pos[0]][pos[1]]
-            queue.push(pos)
+          queue.push(pos) unless @marked[pos[0]][pos[1]]
+          check = false if @grid[pos[0]][pos[1]] == "E"
+        end
+      end
+    end
+  end
+  
+  def find_path_bfs
+    @start = start_pos
+    queue = [start]
+    check = true
+    while check
+      curr_pos = queue.shift
+      @grid[curr_pos[0]][curr_pos[1]] = 'c'
+      render
+      @marked[curr_pos[0]][curr_pos[1]] = true
+      curr_dist = @dist_grid[curr_pos[0]][curr_pos[1]]
+      neighbors(curr_pos).each do |pos|
+        unless @grid[pos[0]][pos[1]] == "*" || @grid[pos[0]][pos[1]] == "\n"
+          dist = @dist_grid[pos[0]][pos[1]]
+          
+          if dist > curr_dist + 1
+            @dist_grid[pos[0]][pos[1]] = curr_dist + 1
+            @path[pos[0]][pos[1]] = curr_pos
           end
+          
+          queue.push(pos) unless @marked[pos[0]][pos[1]]
+          check = false if @grid[pos[0]][pos[1]] == "E"
         end
       end
     end

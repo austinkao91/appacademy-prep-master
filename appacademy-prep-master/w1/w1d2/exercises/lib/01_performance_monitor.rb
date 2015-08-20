@@ -1,7 +1,6 @@
 def measure(num = 1, &block)
-	res = []
 	start = Time.now
-	for i in 0...num
+	(0...num).each do |num|
 		yield
 	end
 	(Time.now - start)/num
