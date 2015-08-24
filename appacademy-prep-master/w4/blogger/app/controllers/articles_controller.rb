@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   include ArticlesHelper
+  before_filter :require_login, only: [:new, :create, :update, :edit, :destroy]
   def index
     @articles = Article.all
   end
@@ -14,14 +15,10 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
   
-  def article_params
-    params.require(:article).permit(:title,:body)
-  end
-  
   def create
     @article = Article.new(article_params)
     @article.save
-    flash.notice "Article #{@article.title} Created!"
+    flash.notice = "Article #{@article.title} Created!"
     redirect_to article_path(@article)
   end
   
@@ -36,7 +33,11 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @article.destroy
     flash.notice = "Article #{@article.title} Deleted!"
-    redirect_to article_path(@article)
+    if params[:from]=='list'
+      redirect_to :back
+    else
+      redirect_to root_url
+    end
   end
   
   def edit
